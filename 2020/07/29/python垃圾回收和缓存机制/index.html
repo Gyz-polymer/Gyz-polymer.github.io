@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>垃圾回收和缓存机制 | Gxzblog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Gaoxz,Gaoxz's Blog" />
+  
+  <meta name="description" content="垃圾回收机制一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。引用计数器环状双向链表：refchain—-python中创建的任意对象，都会加到refchain的双向链表中—包含了所有的python对象  针对代码name &#x3D; &#39;bobby&#39;, c语言会创建如下4个数据：  上一个对象的指针 *_ob_prev和下一个对象的指针 *_ob_next(_Py_HEA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="垃圾回收和缓存机制">
+<meta property="og:url" content="https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="Gxzblog">
+<meta property="og:description" content="垃圾回收机制一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。引用计数器环状双向链表：refchain—-python中创建的任意对象，都会加到refchain的双向链表中—包含了所有的python对象  针对代码name &#x3D; &#39;bobby&#39;, c语言会创建如下4个数据：  上一个对象的指针 *_ob_prev和下一个对象的指针 *_ob_next(_Py_HEA">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190112163900487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Rhbm14MjE5,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200429162029903.png">
+<meta property="article:published_time" content="2020-07-29T08:42:04.290Z">
+<meta property="article:modified_time" content="2020-07-29T08:50:38.817Z">
+<meta property="article:author" content="Gxzblog">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190112163900487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Rhbm14MjE5,size_16,color_FFFFFF,t_70">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/Gyz-polymer.github.io/css/style.css">
+
+  
+<script src="/Gyz-polymer.github.io/js/pace.min.js"></script>
+
+  
+
+  
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/Gyz-polymer.github.io/" class="left">
+                    <span class="site-title">Gaoxz&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a  href="/Gyz-polymer.github.io/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a  href="/Gyz-polymer.github.io/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a  href="/Gyz-polymer.github.io/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/Gyz-polymer.github.io/">
+                    <img src="/Gyz-polymer.github.io/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Gaoxz&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        一个专注 代码 开发的业余博客
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Gaoxz" target="_blank" href="https://github.com/Gyz-polymer">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="https://github.com/Gyz-polymer">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" href="https://weibo.com/u/3860537024">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="qq" target="_blank" href="https://user.qzone.qq.com/1246890669">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-python垃圾回收和缓存机制" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      垃圾回收和缓存机制
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/Gyz-polymer.github.io/categories/python/">python</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2020-07-29
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h2><h5 id="一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。"><a href="#一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。" class="headerlink" title="一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。"></a>一句话python垃圾回收：以<code>引用计数</code>为主，<code>标记清除</code>和<code>分代回收</code>为辅。</h5><h4 id="引用计数器"><a href="#引用计数器" class="headerlink" title="引用计数器"></a>引用计数器</h4><p><code>环状双向链表</code>：<code>refchain</code>—-python中创建的任意对象，都会加到refchain的双向链表中—包含了所有的python对象</p>
+<p><img src="https://img-blog.csdnimg.cn/20190112163900487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Rhbm14MjE5,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p>针对代码<code>name = &#39;bobby&#39;</code>, c语言会创建如下4个数据：</p>
+<ul>
+<li><code>上一个对象的指针 *_ob_prev</code>和<code>下一个对象的指针 *_ob_next</code>(_Py_HEAD_EXTRA)—双向查找</li>
+<li><code>数据的类型 ob_refcnt</code>：如int,str,float等</li>
+<li>``引用计数 *ob_type<code>。此时引用计数是1，如果再让</code>new  = name<code>,则引用计数变为2。每一个对象都有至少这四个值,这四个值存放在结构体</code>PyObject` 里。</li>
+</ul>
+<p>由多个元素组成的对象，如字典，列表，集合等还有一个值<code>ob_size</code>，用来存储数据大大小(元素的个数)。</p>
+<blockquote>
+<p>除<code>PyObject</code>之外，Python中另一个重要的是<code>PyVarObject</code>了，它是变长对象，例如List、String，显然<code>PyObject</code>无法满足它们需求，所以就需要用到<code>PyVarObject</code>了，实际上，<code>PyVarObject</code>与<code>PyObject</code>相比只多了一个属性<code>ob_size</code>，它指明了变成对象中有多少个元素（不是字节数）</p>
+</blockquote>
+<p>c++中两个重要的结构体：<code>PyObject</code> 和<code>PyVarObject</code>就是上述这个作用。</p>
+<p>举例：创建一个float的内部实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">data = <span class="number">3.14</span></span><br><span class="line"><span class="comment"># 内部会创建</span></span><br><span class="line">_ob_next = refchain的下一个对象</span><br><span class="line">_ob_prev = refchain的上一个对象</span><br><span class="line">ob_refcnt = <span class="number">1</span>  <span class="comment"># 默认是1，当有其他变量引用时，引用计数发送变化 del则减一，当引用为0时则进行对象回收</span></span><br><span class="line">ob_type = float</span><br><span class="line">ob_fval = <span class="number">3.14</span></span><br><span class="line"><span class="comment"># 回收：将对象从refchain中移除，将对象进行销毁，归还对象所占用的内存</span></span><br></pre></td></tr></table></figure>
+
+<p>python会根据数据类型的不同，找到其对应的结构体，根据结构体中的字段来创建相关的数据，然后将对象添加到refchain双向链表中。<code>当引用为0时就当成垃圾删除</code></p>
+<h5 id="引用计数器的bug：循环引用"><a href="#引用计数器的bug：循环引用" class="headerlink" title="引用计数器的bug：循环引用"></a>引用计数器的bug：<code>循环引用</code></h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">t1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]  <span class="comment">#refchain创建一个列表，列表的引用计数为1</span></span><br><span class="line">t2 = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]  <span class="comment">#refchain再创建一个列表，列表的引用计数为1</span></span><br><span class="line">t1.append(t2) <span class="comment"># t2被追加到t1，则t2对应的对象[4,5,6]的引用计数器加1，变为2</span></span><br><span class="line">t2.append(t1) <span class="comment"># t1被追加到t2，则v1对应的对象[1,2,3]的引用计数器加1，变为2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> t1 <span class="comment"># 引用计数器-1，还是1，无法回收</span></span><br><span class="line"><span class="keyword">del</span> t2 <span class="comment"># 引用计数器-1，还是1，无法回收</span></span><br><span class="line"><span class="comment"># 但是，此时没有变量指向[1,2,3]和[4,5,6]这两个列表了，变成一直存在于内存中的垃圾</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="标记清除"><a href="#标记清除" class="headerlink" title="标记清除"></a>标记清除</h4><h5 id="目的：解决循环引用"><a href="#目的：解决循环引用" class="headerlink" title="目的：解决循环引用"></a>目的：解决<code>循环引用</code></h5><p><code>实现</code>：再python底层再维护一个链表，在链表中专门放那些可能存在循环引用的对象(能存放其他对象的对象)，如list,dict,tuple,set等。</p>
+<p>在python内部<code>某种情况</code>下区扫描这个可能循环引用的链表，检查是否有循环引用，如果有就让双方的引用计数器都减1，如果计数器是0就垃圾回收。</p>
+<p>因此，python就有了两个链表。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200429162029903.png" alt="img"></p>
+<p>问题来了：</p>
+<ul>
+<li><p>什么时候扫描？</p>
+</li>
+<li><p>扫描的代价：每次不仅要扫描可能有循环引用的对象，还要扫描其子元素是否有循环引用</p>
+</li>
+</ul>
+<p>扫描的代价很大，每次全部扫描成本很高，频繁扫描严重消耗性能，所以引入了<code>对象分代</code>机制。</p>
+<h4 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h4><p><code>实现</code>：将可能存在循环引用的对象维护成3个链表：</p>
+<ul>
+<li>0代链表：规定0代中对象个数达到700个就扫描1次。</li>
+<li>1代链表：规定0代扫描10次，1代扫描1次。</li>
+<li>2代链表：规定1代扫描10次，2代扫描1次。</li>
+</ul>
+<p>最开始可能有循环引用的对象都将添加到0代，直到达到了700个，就进行1次扫描，如果有循环引用就计数器都减1，回收垃圾，如果没有，接下来的对象就添加到1代链表,如果再满了，就加到2代链表。</p>
+<h4 id="缓存机制"><a href="#缓存机制" class="headerlink" title="缓存机制"></a>缓存机制</h4><h5 id="池"><a href="#池" class="headerlink" title="池"></a>池</h5><p>为了避免重复去创建和销毁常见对象，将常见对象(int,str)放在了一个池里，也就是说池里的对象永远不会被回收。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python内部会创建从-5到257的值，放在池里，所以创建t1 = 3时，不会重新开辟内存，直接从池里拿</span></span><br><span class="line"><span class="comment"># int的数据池也被称为小数据池small_ints</span></span><br><span class="line">t1 = <span class="number">3</span></span><br><span class="line">t2 = <span class="number">6</span></span><br><span class="line">t3 = <span class="number">3</span>  <span class="comment">#t3和t1指向的内存地址一模一样--id(t3) == id(t1)</span></span><br><span class="line">t4 = <span class="number">300</span> <span class="comment"># 会重新创建对象</span></span><br><span class="line">t5 = <span class="number">300</span> <span class="comment"># 也会重新创建对象,t5与t4内存地址不同--id(t4) != id(t5)</span></span><br></pre></td></tr></table></figure>
+
+<p>对于字符串str类型，内部将所有的<code>ASCII字符</code>缓存到了<code>unicode_latin[256]</code>链表中，以后不用再反复创建。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">'C'</span></span><br><span class="line">print(s1) <span class="comment">#out:1343834377264</span></span><br><span class="line"><span class="keyword">del</span> s1</span><br><span class="line">s2 = <span class="string">'C'</span></span><br><span class="line">print(s2) <span class="comment">#out:1343834377264  s1和s2用的是同一个id地址</span></span><br></pre></td></tr></table></figure>
+
+<p>字符串驻留机制：对于只有字符，数字，下划线且长度不大于20的字符串，会缓存到内存中，再次创建一模一样的字符串时，不会再次开辟内存，而是直接从内存中取出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">'abcde'</span></span><br><span class="line">print(id(s1)) <span class="comment">#out:1996598711216</span></span><br><span class="line"><span class="keyword">del</span> s1</span><br><span class="line">s2 = <span class="string">'abcde'</span></span><br><span class="line">print(id(s2)) <span class="comment">#out:1996598711216</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="free-list链表"><a href="#free-list链表" class="headerlink" title="free_list链表"></a>free_list链表</h5><p>当一个对象(float,list,dict,tuple)的引用计数器为0时，按理说应该回收，但内部不直接回收，而是放到<code>free_list链表</code>中当作缓存，下次再创建相同类型的对象时就不用重新开辟内存了，而是直接使用<code>free_list链表</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pie = <span class="number">3.14</span>  <span class="comment"># 创建float类型对象，开辟内存，添加到refchain中</span></span><br><span class="line"><span class="keyword">del</span> pie <span class="comment"># 从refchain移除，添加到free_list中</span></span><br><span class="line"><span class="comment"># 再次创建float类型</span></span><br><span class="line">t2 = <span class="number">6.88</span> <span class="comment"># 不会重新开辟内存，从free_list中获取对象，对象数据初始化再放到refchain中。</span></span><br></pre></td></tr></table></figure>
+
+<p>但是不是所以数据都缓存到free_list中，而是有数量限制，假设只能放100个对象，超过了100就会删除最先添加的对象。</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2020年07月29日 16:50</p>
+        <p>原始链接： <a class="post-url" href="/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" title="垃圾回收和缓存机制">https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</a></p>
+        <footer>
+            <a href="https://github.com/Gyz-polymer/Gyz-polymer.github.io">
+                <img src="/Gyz-polymer.github.io/images/logo.png" alt="Gxzblog">
+                Gxzblog
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃雪糕~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/Gyz-polymer.github.io/images/wechat_code.png" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/Gyz-polymer.github.io/images/wechat_code.png">
+                <img class="reward-select-item-wechat" src="/Gyz-polymer.github.io/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/Gyz-polymer.github.io/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/Gyz-polymer.github.io/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/&title=《垃圾回收和缓存机制》 — Gxzblog&pic=https://github.com/Gyz-polymer/Gyz-polymer.github.ioimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/&title=《垃圾回收和缓存机制》 — Gxzblog&source=Life is short, I enjoy python." data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《垃圾回收和缓存机制》 — Gxzblog&url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/&via=https://github.com/Gyz-polymer/Gyz-polymer.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/Gyz-polymer.github.io/tags/python/" class="color2">python</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#垃圾回收机制"><span class="post-toc-text">垃圾回收机制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。"><span class="post-toc-text">一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#引用计数器"><span class="post-toc-text">引用计数器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#引用计数器的bug：循环引用"><span class="post-toc-text">引用计数器的bug：循环引用</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#标记清除"><span class="post-toc-text">标记清除</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#目的：解决循环引用"><span class="post-toc-text">目的：解决循环引用</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#分代回收"><span class="post-toc-text">分代回收</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#缓存机制"><span class="post-toc-text">缓存机制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#池"><span class="post-toc-text">池</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#free-list链表"><span class="post-toc-text">free_list链表</span></a></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+  
+    <a href="/Gyz-polymer.github.io/2020/07/29/%E5%88%A4%E6%96%AD%E5%BC%82%E5%BA%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">判断异序字符串</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <div id="SOHUCS" sid="python垃圾回收和缓存机制" ></div>
+<script type="text/javascript">
+    (function(){
+        var appid = 'true';
+        var conf = 'true';
+        var width = window.innerWidth || document.documentElement.clientWidth;
+        if (width < 960) {
+            window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+        友情连接<a href="https://www.ypli1216.top" target="_blank" rel="noopener">LiYP</a>
+      &copy; 2020 Gxzblog<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "https://github.com/Gyz-polymer/Gyz-polymer.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/Gyz-polymer.github.io/categories/javacript/">javacript</a><a class="category-link" href="/Gyz-polymer.github.io/categories/javacript/jQuery/">jQuery</a><a class="category-link" href="/Gyz-polymer.github.io/categories/python/">python</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/Gyz-polymer.github.io/tags/JavaScript/" style="font-size: 15px;">JavaScript</a> <a href="/Gyz-polymer.github.io/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/Gyz-polymer.github.io/tags/python/" style="font-size: 20px;">python</a> <a href="/Gyz-polymer.github.io/tags/%E5%8A%9E%E5%85%AC%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 10px;">办公自动化</a> <a href="/Gyz-polymer.github.io/tags/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/" style="font-size: 10px;">文件处理</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/Gyz-polymer.github.io/tags/JavaScript/" style="font-size: 15px;">JavaScript</a> <a href="/Gyz-polymer.github.io/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/Gyz-polymer.github.io/tags/python/" style="font-size: 20px;">python</a> <a href="/Gyz-polymer.github.io/tags/%E5%8A%9E%E5%85%AC%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 10px;">办公自动化</a> <a href="/Gyz-polymer.github.io/tags/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/" style="font-size: 10px;">文件处理</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+
+<script src="/Gyz-polymer.github.io/js/search.js"></script>
+
+
+<script src="/Gyz-polymer.github.io/js/main.js"></script>
+
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  
+<script src="/Gyz-polymer.github.io/js/particles.js"></script>
+
+
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  
+<script src="/Gyz-polymer.github.io/js/animate.js"></script>
+
+
+
+  
+<script src="/Gyz-polymer.github.io/js/pop-img.js"></script>
+
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
