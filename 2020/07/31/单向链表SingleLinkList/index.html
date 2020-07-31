@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>单向链表 SingleLinkList | Gxzblog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Gaoxz,Gaoxz's Blog" />
+  
+  <meta name="description" content="单向链表链表是线性表的链式存储方式。逻辑上相邻的数据在计算机内的存储位置不一定相邻。链表的存储方式：通过节点Node储存数据。 每个节点包含两个域：数据域和指针域。数据域存储数据元素，指针域存储下一个节点的地址，因此指针指向的类型也是节点类型。每个指针都指向下一个节点，都是朝一个方向的，这样的链表称为单向链表或单链表。   单链表的初始化是指构建一个空表。先创建一个头节点，不存储数据，然后令其指针">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单向链表 SingleLinkList">
+<meta property="og:url" content="https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/31/%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8SingleLinkList/index.html">
+<meta property="og:site_name" content="Gxzblog">
+<meta property="og:description" content="单向链表链表是线性表的链式存储方式。逻辑上相邻的数据在计算机内的存储位置不一定相邻。链表的存储方式：通过节点Node储存数据。 每个节点包含两个域：数据域和指针域。数据域存储数据元素，指针域存储下一个节点的地址，因此指针指向的类型也是节点类型。每个指针都指向下一个节点，都是朝一个方向的，这样的链表称为单向链表或单链表。   单链表的初始化是指构建一个空表。先创建一个头节点，不存储数据，然后令其指针">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ali.xmssdn.micloud.mi.com/2/1566455553514/get_thumbnail?sig=NvLW0DPdvw_u3pmw22_lM-gqUtY&amp;data=Rz0-gHa23lWWgY_ILuLeTrw-Wy5IuVJ3FXFpIEIZ82420NIptsn-KwS_oXXytM0wCGjijmtC6syuKrWoeUwnAZ0iELvAdNlXazMEm9f6C13Y7J30av5r7TSMqNjghNFohC6hx3c0RMrFEn4r6hgLwAJUq-ewFTah97LP2IKhM7veFfV3mURReRMknfZmyJZd_xDY3yJCEbLVpXJOlFdewK_E3swFxCQVVJFK9y_IjPfQl26PHpl87XtKOnlHTBCHB1TdZPNM40YewrupSsegFJzhOjAz7Uq1YKd3JwbsmfIqhoFaNB5rykxLMlDxk2yCu3-5wkzmEcY&amp;ts=1596276799642&amp;w=270&amp;h=270&amp;r=0&amp;_cachekey=e54a967eeb9be7da94ce97e3fbca1f7e">
+<meta property="article:published_time" content="2020-07-31T10:30:28.509Z">
+<meta property="article:modified_time" content="2020-07-31T10:32:03.333Z">
+<meta property="article:author" content="Gxzblog">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ali.xmssdn.micloud.mi.com/2/1566455553514/get_thumbnail?sig=NvLW0DPdvw_u3pmw22_lM-gqUtY&amp;data=Rz0-gHa23lWWgY_ILuLeTrw-Wy5IuVJ3FXFpIEIZ82420NIptsn-KwS_oXXytM0wCGjijmtC6syuKrWoeUwnAZ0iELvAdNlXazMEm9f6C13Y7J30av5r7TSMqNjghNFohC6hx3c0RMrFEn4r6hgLwAJUq-ewFTah97LP2IKhM7veFfV3mURReRMknfZmyJZd_xDY3yJCEbLVpXJOlFdewK_E3swFxCQVVJFK9y_IjPfQl26PHpl87XtKOnlHTBCHB1TdZPNM40YewrupSsegFJzhOjAz7Uq1YKd3JwbsmfIqhoFaNB5rykxLMlDxk2yCu3-5wkzmEcY&amp;ts=1596276799642&amp;w=270&amp;h=270&amp;r=0&amp;_cachekey=e54a967eeb9be7da94ce97e3fbca1f7e">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/Gyz-polymer.github.io/css/style.css">
+
+  
+<script src="/Gyz-polymer.github.io/js/pace.min.js"></script>
+
+  
+
+  
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/Gyz-polymer.github.io/" class="left">
+                    <span class="site-title">Gaoxz&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a  href="/Gyz-polymer.github.io/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a  href="/Gyz-polymer.github.io/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a  href="/Gyz-polymer.github.io/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/Gyz-polymer.github.io/">
+                    <img src="/Gyz-polymer.github.io/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Gaoxz&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        一个专注 代码 开发的业余博客
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Gaoxz" target="_blank" href="https://github.com/Gyz-polymer">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="https://github.com/Gyz-polymer">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" href="https://weibo.com/u/3860537024">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="qq" target="_blank" href="https://user.qzone.qq.com/1246890669">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-单向链表SingleLinkList" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      单向链表 SingleLinkList
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/Gyz-polymer.github.io/categories/python/">python</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2020-07-31
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="单向链表"><a href="#单向链表" class="headerlink" title="单向链表"></a>单向链表</h2><h5 id="链表是线性表的链式存储方式。逻辑上相邻的数据在计算机内的存储位置不一定相邻。"><a href="#链表是线性表的链式存储方式。逻辑上相邻的数据在计算机内的存储位置不一定相邻。" class="headerlink" title="链表是线性表的链式存储方式。逻辑上相邻的数据在计算机内的存储位置不一定相邻。"></a>链表是线性表的链式存储方式。<code>逻辑上相邻的数据在计算机内的存储位置不一定相邻。</code></h5><p>链表的存储方式：通过<code>节点Node</code>储存数据。</p>
+<p>每个节点包含两个域：<code>数据域</code>和<code>指针域</code>。数据域存储数据元素，指针域存储下一个节点的地址，因此指针指向的类型也是节点类型。每个指针都指向下一个节点，都是朝一个方向的，这样的链表称为单向链表或单链表。</p>
+<img src="https://ali.xmssdn.micloud.mi.com/2/1566455553514/get_thumbnail?sig=NvLW0DPdvw_u3pmw22_lM-gqUtY&amp;data=Rz0-gHa23lWWgY_ILuLeTrw-Wy5IuVJ3FXFpIEIZ82420NIptsn-KwS_oXXytM0wCGjijmtC6syuKrWoeUwnAZ0iELvAdNlXazMEm9f6C13Y7J30av5r7TSMqNjghNFohC6hx3c0RMrFEn4r6hgLwAJUq-ewFTah97LP2IKhM7veFfV3mURReRMknfZmyJZd_xDY3yJCEbLVpXJOlFdewK_E3swFxCQVVJFK9y_IjPfQl26PHpl87XtKOnlHTBCHB1TdZPNM40YewrupSsegFJzhOjAz7Uq1YKd3JwbsmfIqhoFaNB5rykxLMlDxk2yCu3-5wkzmEcY&amp;ts=1596276799642&amp;w=270&amp;h=270&amp;r=0&amp;_cachekey=e54a967eeb9be7da94ce97e3fbca1f7e" alt="img" style="zoom:50%;" />
+
+<p>单链表的初始化是指构建一个空表。先创建一个头节点，不存储数据，然后令其指针域为空。</p>
+<h4 id="链表的一般特点："><a href="#链表的一般特点：" class="headerlink" title="链表的一般特点："></a>链表的一般特点：</h4><p>❏ <code>SingleLinkList()</code>创建一个空链表。它不需要参数，且会返回一个空列表。</p>
+<p>❏ <code>add(item)</code>向链表头部添加item。它接受一个元素作为参数，无返回值。</p>
+<p>❏ <code>remove(item)</code>从链表中移除item。它接受一个元素作为参数，并且修改列表。</p>
+<p>❏ <code>search(item)</code>在链表中搜索元素item。它接受一个元素作为参数，并且返回布尔值。</p>
+<p>❏ <code>travel()</code>打印整个链表，不需要参数。</p>
+<p>❏ <code>isEmpty()</code>检查列表是否为空。它不需要参数，并且返回布尔值。</p>
+<p>❏ <code>length()</code>返回列表中元素的个数。它不需要参数，并且返回一个整数。</p>
+<p>❏ <code>append(item)</code>在列表的尾部添加item。它接受一个元素作为参数，无返回值。</p>
+<p>❏ <code>index(item)</code>返回该元素在列表中的位置。它接受一个元素作为参数，并且返回该元素的下标(下标从0开始)。</p>
+<p>❏ <code>insert(pos, item)</code>假设元素item之前不在列表中，同时假设pos是合理的值，并在位置pos处添加元素item。它接受两个参数，无返回值。</p>
+<p>❏ <code>pop()</code>移除列表中的最后一个元素。它不需要参数，且会返回一个元素。</p>
+<p>❏ <code>pop(pos)</code>移除该位置上的元素。它接受位置参数，且会返回一个元素。</p>
+<h4 id="利用python实现单向链表"><a href="#利用python实现单向链表" class="headerlink" title="利用python实现单向链表"></a>利用python实现单向链表</h4><h5 id="创建链表节点Node类"><a href="#创建链表节点Node类" class="headerlink" title="创建链表节点Node类"></a>创建链表节点Node类</h5><h6 id="每个节点包含两个域：数据域和指针域。数据域存储数据元素，指针域存储下一个节点的地址。"><a href="#每个节点包含两个域：数据域和指针域。数据域存储数据元素，指针域存储下一个节点的地址。" class="headerlink" title="每个节点包含两个域：数据域和指针域。数据域存储数据元素，指针域存储下一个节点的地址。"></a>每个节点包含两个域：数据域和指针域。数据域存储数据元素，指针域存储下一个节点的地址。</h6><blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        self.data = data</span><br><span class="line">        <span class="comment"># 将初始值设为None</span></span><br><span class="line">        self.next = <span class="literal">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getData</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.data</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getNext</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.next</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setData</span><span class="params">(self, newdata)</span>:</span></span><br><span class="line">        self.data = newdata</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setNext</span><span class="params">(self, newNext)</span>:</span></span><br><span class="line">        self.next = newNext</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="创建单向链表"><a href="#创建单向链表" class="headerlink" title="创建单向链表"></a>创建单向链表</h5><h6 id="单向链表类本身并不包含任何节点对象，而只保存了指向列表头部的第一个节点的引用。"><a href="#单向链表类本身并不包含任何节点对象，而只保存了指向列表头部的第一个节点的引用。" class="headerlink" title="单向链表类本身并不包含任何节点对象，而只保存了指向列表头部的第一个节点的引用。"></a>单向链表类本身并不包含任何节点对象，而只保存了指向列表头部的第一个节点的引用。</h6><blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="class"><span class="keyword">class</span> <span class="title">SingleLinkList</span>:</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">       <span class="comment"># 列表初始化时并没有元素，所有引用也为空</span></span><br><span class="line">       self.head =<span class="literal">None</span></span><br><span class="line">   <span class="comment"># 检查列表是否为空，只需要检查列表中头部的引用是否位None就可以，因为如果头部为空后面也是空</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">isEmpty</span><span class="params">(self)</span>:</span></span><br><span class="line">       <span class="comment"># 布尔表达式self.head == None当且仅当链表中没有节点时才为真。</span></span><br><span class="line">       <span class="keyword">return</span> self.head == <span class="literal">None</span></span><br><span class="line">   <span class="comment"># 获取链表长度</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">length</span><span class="params">(self)</span>:</span></span><br><span class="line">       current = self.head <span class="comment"># current是外部引用，被初始化为头节点</span></span><br><span class="line">       count = <span class="number">0</span></span><br><span class="line">       <span class="keyword">while</span> current != <span class="literal">None</span>: <span class="comment"># None是最后一个节点的引用</span></span><br><span class="line">           count += <span class="number">1</span></span><br><span class="line">           current = current.getNext()</span><br><span class="line">       <span class="keyword">return</span> count</span><br><span class="line">   <span class="comment"># 搜索链表</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, item)</span>:</span></span><br><span class="line">       current = self.head</span><br><span class="line">       <span class="comment"># 将查询结构记录在found中</span></span><br><span class="line">       found = <span class="literal">False</span></span><br><span class="line">       <span class="keyword">while</span> current != <span class="literal">None</span> <span class="keyword">and</span> <span class="keyword">not</span> found:</span><br><span class="line">           <span class="keyword">if</span> current.getData() == item:</span><br><span class="line">               found = <span class="literal">True</span></span><br><span class="line">           <span class="keyword">else</span>:</span><br><span class="line">               current = current.getNext()</span><br><span class="line">       <span class="keyword">return</span> found</span><br><span class="line">   <span class="comment"># 遍历链表</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">travel</span><span class="params">(self)</span>:</span></span><br><span class="line">       current = self.head</span><br><span class="line">       <span class="keyword">while</span> current != <span class="literal">None</span>:</span><br><span class="line">           print(current.data, end=<span class="string">'=&gt;'</span>)</span><br><span class="line">           current = current.getNext()</span><br><span class="line">       <span class="comment"># 增加一个换行</span></span><br><span class="line">       print()</span><br><span class="line">   <span class="comment"># 搜索某个元素,返回位置，从0开始，如果没有返回None</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(self, item)</span>:</span></span><br><span class="line">       current = self.head</span><br><span class="line">       <span class="comment"># 如果找到了元素</span></span><br><span class="line">       <span class="keyword">if</span> self.search(item):</span><br><span class="line">           count = <span class="number">0</span></span><br><span class="line">           <span class="keyword">while</span> current.getData() != item:</span><br><span class="line">               count += <span class="number">1</span></span><br><span class="line">               current = current.getNext()</span><br><span class="line">           <span class="keyword">return</span> count</span><br><span class="line"></span><br><span class="line">   <span class="comment"># 链表头部增加元素，元素的位置无所谓，重要的是方便和指引下一个元素</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, item)</span>:</span></span><br><span class="line">       <span class="comment"># 创建一个新的结点</span></span><br><span class="line">       node = Node(item)</span><br><span class="line">       <span class="comment"># 将新结点的下一个元素设置为头节点</span></span><br><span class="line">       node.setNext(self.head)</span><br><span class="line">       <span class="comment"># 修改新节点为头节点</span></span><br><span class="line">       self.head = node</span><br><span class="line">   <span class="comment"># 向链表尾部添加元素</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">append</span><span class="params">(self, item)</span>:</span></span><br><span class="line">       <span class="comment"># 创建一个新的结点</span></span><br><span class="line">       node = Node(item)</span><br><span class="line">       <span class="comment"># 先判断是否为空链表</span></span><br><span class="line">       <span class="keyword">if</span> self.isEmpty():</span><br><span class="line">           self.head = node</span><br><span class="line">       <span class="comment"># 若链表不为空</span></span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           current = self.head</span><br><span class="line">           <span class="comment"># 遍历到倒数第二个节点的引用</span></span><br><span class="line">           <span class="keyword">while</span> current.getNext() != <span class="literal">None</span>:</span><br><span class="line">               current = current.getNext()</span><br><span class="line">           <span class="comment"># 当current时最后一个元素时,把新节点放在其后面</span></span><br><span class="line">           current.setNext(node)</span><br><span class="line">       <span class="comment"># 向链表任意位置插入元素</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">insert</span><span class="params">(self, pos, item)</span>:</span></span><br><span class="line">       <span class="comment"># 如果pos小于0，则在头部加入</span></span><br><span class="line">       <span class="keyword">if</span> pos &lt; <span class="number">0</span>:</span><br><span class="line">           self.add(item)</span><br><span class="line">       <span class="comment"># 如果pos大于列表长度就在尾部添加</span></span><br><span class="line">       <span class="keyword">elif</span> pos &gt; self.length()<span class="number">-1</span>:</span><br><span class="line">           self.append(item)</span><br><span class="line">       <span class="comment"># 在中间添加元素时</span></span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           <span class="comment"># 创建一个新节点</span></span><br><span class="line">           node = Node(item)</span><br><span class="line">           current = self.head</span><br><span class="line">           index = <span class="number">0</span></span><br><span class="line">           <span class="keyword">while</span> index &lt; pos - <span class="number">1</span>:</span><br><span class="line">               current = current.getNext()</span><br><span class="line">               index += <span class="number">1</span></span><br><span class="line">           <span class="comment"># 当index=pos-1时,获取下一个节点</span></span><br><span class="line">           next = current.getNext()</span><br><span class="line">           <span class="comment"># 将新节点插入</span></span><br><span class="line">           current.setNext(node)</span><br><span class="line">           <span class="comment"># 新节点的下一个位置设为next节点</span></span><br><span class="line">           node.setNext(next)</span><br><span class="line"></span><br><span class="line">   <span class="comment"># remove方法：先查找找到再删除，既要删除节点也要删除引用</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">remove</span><span class="params">(self, item)</span>:</span></span><br><span class="line">       current = self.head</span><br><span class="line">       <span class="comment"># previous指向上一次访问的节点</span></span><br><span class="line">       previous = <span class="literal">None</span></span><br><span class="line">       found = <span class="literal">False</span></span><br><span class="line">       <span class="comment"># 先找到元素</span></span><br><span class="line">       <span class="keyword">while</span> <span class="keyword">not</span> found:</span><br><span class="line">           <span class="keyword">if</span> current.getData() == item:</span><br><span class="line">               found = <span class="literal">True</span></span><br><span class="line">           <span class="keyword">else</span>:</span><br><span class="line">               previous = current</span><br><span class="line">               current = current.getNext()</span><br><span class="line">       <span class="comment"># 当current是第一个元素时</span></span><br><span class="line">       <span class="keyword">if</span> previous == <span class="literal">None</span>:</span><br><span class="line">           self.head = current.getNext()</span><br><span class="line">       <span class="comment"># 最后一个元素也适用，下一个就是None</span></span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           previous.setNext(current.getNext())</span><br><span class="line">   <span class="comment"># 删除最后一个元素</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self,*pos)</span>:</span></span><br><span class="line">       <span class="comment">#如果链表非空</span></span><br><span class="line">       <span class="keyword">if</span> self.head:</span><br><span class="line">           current = self.head</span><br><span class="line">           index = <span class="number">0</span></span><br><span class="line">           <span class="comment"># 参数*pos是一个元组，没有传入位置pos</span></span><br><span class="line">           <span class="keyword">if</span> <span class="keyword">not</span> len(pos):</span><br><span class="line">               <span class="comment"># 找到倒数第二个元素的引用</span></span><br><span class="line">               <span class="keyword">while</span> current.getNext().getNext() != <span class="literal">None</span>:</span><br><span class="line">                   current = current.getNext()</span><br><span class="line">               <span class="comment"># 设置最后一个元素为None</span></span><br><span class="line">               current.setNext(<span class="literal">None</span>)</span><br><span class="line">           <span class="comment"># 如果传入了位置pos</span></span><br><span class="line">           <span class="keyword">else</span>:</span><br><span class="line">               <span class="comment"># 获取元组第一个参数，也是唯一的参数</span></span><br><span class="line">               <span class="keyword">while</span> index &lt; pos[<span class="number">0</span>] - <span class="number">1</span>:</span><br><span class="line">                   current = current.getNext()</span><br><span class="line">                   index += <span class="number">1</span></span><br><span class="line">               <span class="comment"># 当找到位置时,跳过当前元素</span></span><br><span class="line">               current.setNext(current.getNext().getNext())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;ulist = SingleLinkList()</span><br><span class="line">&gt;print(ulist.isEmpty()) <span class="comment">#out: True</span></span><br><span class="line">&gt;ulist.add(<span class="string">'a'</span>)         <span class="comment">#out: False</span></span><br><span class="line">&gt;ulist.travel()         <span class="comment">#out: a=&gt;</span></span><br><span class="line">&gt;print(ulist.isEmpty())  <span class="comment">#out: False</span></span><br><span class="line">&gt;ulist.add(<span class="string">'b'</span>)</span><br><span class="line">&gt;ulist.add(<span class="string">'c'</span>)</span><br><span class="line">&gt;ulist.add(<span class="string">'d'</span>)</span><br><span class="line">&gt;ulist.travel()    <span class="comment">#out: d=&gt;c=&gt;b=&gt;a=&gt;</span></span><br><span class="line">&gt;print(ulist.search(<span class="string">'a'</span>)) <span class="comment">#out: True</span></span><br><span class="line">&gt;print(ulist.index(<span class="string">'b'</span>))  <span class="comment">#out: 2</span></span><br><span class="line">&gt;ulist.remove(<span class="string">'a'</span>)</span><br><span class="line">&gt;print(ulist.search(<span class="string">'a'</span>)) <span class="comment">#out: False</span></span><br><span class="line">&gt;ulist.travel()</span><br><span class="line">&gt;ulist.append(<span class="string">'w'</span>)    <span class="comment">#out: d=&gt;c=&gt;b=&gt;</span></span><br><span class="line">&gt;ulist.travel()</span><br><span class="line">&gt;ulist.insert(<span class="number">2</span>,<span class="string">'v'</span>) <span class="comment">#out: d=&gt;c=&gt;b=&gt;w=&gt;</span></span><br><span class="line">&gt;ulist.travel()      <span class="comment">#out: d=&gt;c=&gt;v=&gt;b=&gt;w=&gt;</span></span><br><span class="line">&gt;ulist.pop()</span><br><span class="line">&gt;ulist.travel()      <span class="comment">#out: d=&gt;c=&gt;v=&gt;b=&gt;</span></span><br><span class="line">&gt;ulist.pop()</span><br><span class="line">&gt;ulist.travel()      <span class="comment">#out: d=&gt;c=&gt;v=&gt;</span></span><br><span class="line">&gt;ulist.pop(<span class="number">1</span>)</span><br><span class="line">&gt;ulist.travel()      <span class="comment">#out:d=&gt;v=&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>参考文献<code>《python数据结构与算法分析(第2版)》</code></p>
+</blockquote>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2020年07月31日 18:32</p>
+        <p>原始链接： <a class="post-url" href="/Gyz-polymer.github.io/2020/07/31/%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8SingleLinkList/" title="单向链表 SingleLinkList">https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/31/%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8SingleLinkList/</a></p>
+        <footer>
+            <a href="https://github.com/Gyz-polymer/Gyz-polymer.github.io">
+                <img src="/Gyz-polymer.github.io/images/logo.png" alt="Gxzblog">
+                Gxzblog
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃雪糕~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/Gyz-polymer.github.io/images/wechat_code.png" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/Gyz-polymer.github.io/images/wechat_code.png">
+                <img class="reward-select-item-wechat" src="/Gyz-polymer.github.io/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/Gyz-polymer.github.io/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/Gyz-polymer.github.io/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/31/%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8SingleLinkList/&title=《单向链表 SingleLinkList》 — Gxzblog&pic=https://github.com/Gyz-polymer/Gyz-polymer.github.ioimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/31/%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8SingleLinkList/&title=《单向链表 SingleLinkList》 — Gxzblog&source=Life is short, I enjoy python." data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/31/%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8SingleLinkList/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《单向链表 SingleLinkList》 — Gxzblog&url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/31/%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8SingleLinkList/&via=https://github.com/Gyz-polymer/Gyz-polymer.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/31/%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8SingleLinkList/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/31/%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8SingleLinkList/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/Gyz-polymer.github.io/tags/python/" class="color2">python</a>
+      
+    <a href="/Gyz-polymer.github.io/tags/数据结构/" class="color5">数据结构</a>
+      
+    <a href="/Gyz-polymer.github.io/tags/算法/" class="color3">算法</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单向链表"><span class="post-toc-text">单向链表</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#链表是线性表的链式存储方式。逻辑上相邻的数据在计算机内的存储位置不一定相邻。"><span class="post-toc-text">链表是线性表的链式存储方式。逻辑上相邻的数据在计算机内的存储位置不一定相邻。</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#链表的一般特点："><span class="post-toc-text">链表的一般特点：</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#利用python实现单向链表"><span class="post-toc-text">利用python实现单向链表</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#创建链表节点Node类"><span class="post-toc-text">创建链表节点Node类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#每个节点包含两个域：数据域和指针域。数据域存储数据元素，指针域存储下一个节点的地址。"><span class="post-toc-text">每个节点包含两个域：数据域和指针域。数据域存储数据元素，指针域存储下一个节点的地址。</span></a></li></ol></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#创建单向链表"><span class="post-toc-text">创建单向链表</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#单向链表类本身并不包含任何节点对象，而只保存了指向列表头部的第一个节点的引用。"><span class="post-toc-text">单向链表类本身并不包含任何节点对象，而只保存了指向列表头部的第一个节点的引用。</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+  
+    <a href="/Gyz-polymer.github.io/2020/07/30/%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97Deque/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">双端队列 Deque</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <div id="SOHUCS" sid="单向链表SingleLinkList" ></div>
+<script type="text/javascript">
+    (function(){
+        var appid = 'true';
+        var conf = 'true';
+        var width = window.innerWidth || document.documentElement.clientWidth;
+        if (width < 960) {
+            window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+        友情连接<a href="https://www.ypli1216.top" target="_blank" rel="noopener"> LiYP</a>
+      &copy; 2020 Gxzblog<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "https://github.com/Gyz-polymer/Gyz-polymer.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/Gyz-polymer.github.io/categories/javacript/">javacript</a><a class="category-link" href="/Gyz-polymer.github.io/categories/javacript/jQuery/">jQuery</a><a class="category-link" href="/Gyz-polymer.github.io/categories/python/">python</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/Gyz-polymer.github.io/tags/JavaScript/" style="font-size: 13.33px;">JavaScript</a> <a href="/Gyz-polymer.github.io/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/Gyz-polymer.github.io/tags/python/" style="font-size: 20px;">python</a> <a href="/Gyz-polymer.github.io/tags/%E5%8A%9E%E5%85%AC%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 10px;">办公自动化</a> <a href="/Gyz-polymer.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">数据结构</a> <a href="/Gyz-polymer.github.io/tags/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/" style="font-size: 10px;">文件处理</a> <a href="/Gyz-polymer.github.io/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.67px;">算法</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/Gyz-polymer.github.io/tags/JavaScript/" style="font-size: 13.33px;">JavaScript</a> <a href="/Gyz-polymer.github.io/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/Gyz-polymer.github.io/tags/python/" style="font-size: 20px;">python</a> <a href="/Gyz-polymer.github.io/tags/%E5%8A%9E%E5%85%AC%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 10px;">办公自动化</a> <a href="/Gyz-polymer.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">数据结构</a> <a href="/Gyz-polymer.github.io/tags/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/" style="font-size: 10px;">文件处理</a> <a href="/Gyz-polymer.github.io/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.67px;">算法</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+
+<script src="/Gyz-polymer.github.io/js/search.js"></script>
+
+
+<script src="/Gyz-polymer.github.io/js/main.js"></script>
+
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  
+<script src="/Gyz-polymer.github.io/js/particles.js"></script>
+
+
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  
+<script src="/Gyz-polymer.github.io/js/animate.js"></script>
+
+
+
+  
+<script src="/Gyz-polymer.github.io/js/pop-img.js"></script>
+
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
