@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>有理数类 | Gxzblog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Gaoxz,Gaoxz's Blog" />
+  
+  <meta name="description" content="有理数类在python中，含有小数的数字通常用float数据类型来表示。使用浮点数（float）的一个缺点是：底层存储方式只是一个近似值，而不是精确值。数字会首先被转换为二进制（基数2），因此不以2的幂作为分母的任何分数，都将会转换成具有无限循环的商。而当这个商数为了放进有限的存储器位置而被截断时，就会丢失一些精度。 解决办法：因此可以创建一个有理数类，专门存放小数来保存浮点数的完整性。 ❏ Ra">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有理数类">
+<meta property="og:url" content="https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/03/%E6%9C%89%E7%90%86%E6%95%B0%E7%B1%BB/index.html">
+<meta property="og:site_name" content="Gxzblog">
+<meta property="og:description" content="有理数类在python中，含有小数的数字通常用float数据类型来表示。使用浮点数（float）的一个缺点是：底层存储方式只是一个近似值，而不是精确值。数字会首先被转换为二进制（基数2），因此不以2的幂作为分母的任何分数，都将会转换成具有无限循环的商。而当这个商数为了放进有限的存储器位置而被截断时，就会丢失一些精度。 解决办法：因此可以创建一个有理数类，专门存放小数来保存浮点数的完整性。 ❏ Ra">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-03T05:41:11.270Z">
+<meta property="article:modified_time" content="2020-08-03T05:43:31.491Z">
+<meta property="article:author" content="Gxzblog">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="魔法方法">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/Gyz-polymer.github.io/css/style.css">
+
+  
+<script src="/Gyz-polymer.github.io/js/pace.min.js"></script>
+
+  
+
+  
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/Gyz-polymer.github.io/" class="left">
+                    <span class="site-title">Gaoxz&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a  href="/Gyz-polymer.github.io/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a  href="/Gyz-polymer.github.io/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a  href="/Gyz-polymer.github.io/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/Gyz-polymer.github.io/">
+                    <img src="/Gyz-polymer.github.io/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Gaoxz&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        一个专注 代码 开发的业余博客
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Gaoxz" target="_blank" href="https://github.com/Gyz-polymer">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="https://github.com/Gyz-polymer">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" href="https://weibo.com/u/3860537024">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="qq" target="_blank" href="https://user.qzone.qq.com/1246890669">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-有理数类" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      有理数类
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/Gyz-polymer.github.io/categories/python/">python</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2020-08-03
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="有理数类"><a href="#有理数类" class="headerlink" title="有理数类"></a>有理数类</h2><h6 id="在python中，含有小数的数字通常用float数据类型来表示。"><a href="#在python中，含有小数的数字通常用float数据类型来表示。" class="headerlink" title="在python中，含有小数的数字通常用float数据类型来表示。"></a>在python中，含有小数的数字通常用float数据类型来表示。</h6><p>使用浮点数（float）的一个缺点是：<code>底层存储方式只是一个近似值，而不是精确值。数字会首先被转换为二进制（基数2），因此不以2的幂作为分母的任何分数，都将会转换成具有无限循环的商。而当这个商数为了放进有限的存储器位置而被截断时，就会丢失一些精度</code>。</p>
+<p><code>解决办法</code>：因此可以创建一个有理数类，专门存放小数来保存浮点数的完整性。</p>
+<h6 id="❏-Rational-分子，分母-创建一个空列表。它接受两个参数，返回以字符串表示的分子，如1-2。"><a href="#❏-Rational-分子，分母-创建一个空列表。它接受两个参数，返回以字符串表示的分子，如1-2。" class="headerlink" title="❏ Rational(分子，分母)创建一个空列表。它接受两个参数，返回以字符串表示的分子，如1/2。"></a>❏ Rational(分子，分母)创建一个空列表。它接受两个参数，返回以字符串表示的分子，如<code>1/2</code>。</h6><h6 id="❏-实现Rational类实例对象之间的加减乘除操作，利用魔法函数实现。"><a href="#❏-实现Rational类实例对象之间的加减乘除操作，利用魔法函数实现。" class="headerlink" title="❏ 实现Rational类实例对象之间的加减乘除操作，利用魔法函数实现。"></a>❏ 实现Rational类实例对象之间的加减乘除操作，利用魔法函数实现。</h6><h6 id="❏-实现Rational类实例对象之间的大小比较，是否等于比较操作，利用魔法函数实现。"><a href="#❏-实现Rational类实例对象之间的大小比较，是否等于比较操作，利用魔法函数实现。" class="headerlink" title="❏ 实现Rational类实例对象之间的大小比较，是否等于比较操作，利用魔法函数实现。"></a>❏ 实现Rational类实例对象之间的大小比较，是否等于比较操作，利用魔法函数实现。</h6><h6 id="❏-实现分子分母约分，输出最简分数，利用欧几里得最大公约数算法实现。"><a href="#❏-实现分子分母约分，输出最简分数，利用欧几里得最大公约数算法实现。" class="headerlink" title="❏ 实现分子分母约分，输出最简分数，利用欧几里得最大公约数算法实现。"></a>❏ 实现分子分母约分，输出最简分数，利用欧几里得最大公约数算法实现。</h6><h4 id="代码："><a href="#代码：" class="headerlink" title="代码："></a><code>代码</code>：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rational</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 构造函数：传入分子和分母</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num, den)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        :param num: is interger</span></span><br><span class="line"><span class="string">        :param den: is interger</span></span><br><span class="line"><span class="string">        post: creates the Rational object num / den</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        self.num = num</span><br><span class="line">        self.den = den</span><br><span class="line">        <span class="comment"># 分母不可以传入0</span></span><br><span class="line">        <span class="keyword">if</span> den == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'分母不可以为0.'</span>)</span><br><span class="line">    <span class="comment"># 欧几里得算法求最大公约数：a 、b（a&gt;b）的最大公约数等于 b 和 a-b 的最大公约数。</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getGCD</span><span class="params">(self)</span>:</span></span><br><span class="line">        x = self.num</span><br><span class="line">        y = self.den</span><br><span class="line">        <span class="keyword">while</span> y:</span><br><span class="line">            t = x % y</span><br><span class="line">            x = y</span><br><span class="line">            y = t</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    <span class="comment"># 在实例中使用加法 +</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span> </span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        :param other: self and other are Rational bojects</span></span><br><span class="line"><span class="string">        :return: Rational result:self + other</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> self.den == other.den:</span><br><span class="line">            num = self.num + other.num</span><br><span class="line">            den = self.den</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            num = self.num * other.den + self.den * other.num</span><br><span class="line">            den = self.den * other.den</span><br><span class="line">        <span class="keyword">return</span> Rational(num, den)</span><br><span class="line">    <span class="comment"># 在实例中使用减法 -</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__sub__</span><span class="params">(self, other)</span>:</span> </span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        :param other: self and other are Rational bojects</span></span><br><span class="line"><span class="string">        :return: Rational result:self + other</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> self.den == other.den:</span><br><span class="line">            num = self.num - other.num</span><br><span class="line">            den = self.den</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            num = self.num * other.den - self.den * other.num</span><br><span class="line">            den = self.den * other.den</span><br><span class="line">        <span class="keyword">return</span> Rational(num, den)</span><br><span class="line">    <span class="comment"># 在实例中使用乘法 *</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__mul__</span><span class="params">(self, other)</span>:</span> </span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        :param other: self and other are Rational bojects</span></span><br><span class="line"><span class="string">        :return: Rational result:self * other</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        num = self.num * other.num</span><br><span class="line">        den = self.den * other.den</span><br><span class="line">        <span class="keyword">return</span> Rational(num, den)</span><br><span class="line">    <span class="comment"># 在实例中使用除法 /</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__truediv__</span><span class="params">(self, other)</span>:</span> </span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        :param other: self and other are Rational bojects</span></span><br><span class="line"><span class="string">        :return: Rational result:self * other</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        num = self.num * other.den</span><br><span class="line">        den = self.den * other.num</span><br><span class="line">        <span class="keyword">return</span> Rational(num, den)</span><br><span class="line">     <span class="comment"># 在实例中使用取负 -</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__neg__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        :param other: self is Rational bojects</span></span><br><span class="line"><span class="string">        :return: Rational result:self * other</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        num = - self.num</span><br><span class="line">        den = self.den</span><br><span class="line">        <span class="keyword">return</span> Rational(num, den)</span><br><span class="line">    <span class="comment"># 小于＜比较，返回布尔值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span> </span><br><span class="line">        <span class="keyword">return</span> (self.num / self.den - other.num / other.den) &lt; <span class="number">0</span></span><br><span class="line">    <span class="comment"># 小于等于＜=比较，返回布尔值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__le__</span><span class="params">(self, other)</span>:</span> </span><br><span class="line">        <span class="keyword">return</span> (self.num / self.den - other.num / other.den) &lt;= <span class="number">0</span></span><br><span class="line">    <span class="comment"># 大于大于比较，返回布尔值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__gt__</span><span class="params">(self, other)</span>:</span> </span><br><span class="line">        <span class="keyword">return</span> (self.num / self.den - other.num / other.den) &gt; <span class="number">0</span></span><br><span class="line">    <span class="comment"># 大于等于=＞比较，返回布尔值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__ge__</span><span class="params">(self, other)</span>:</span> </span><br><span class="line">        <span class="keyword">return</span> (self.num / self.den - other.num / other.den) &gt;= <span class="number">0</span></span><br><span class="line">    <span class="comment"># 等于==比较，返回布尔值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__eq__</span><span class="params">(self, other)</span>:</span> </span><br><span class="line">        <span class="keyword">return</span> (self.num / self.den - other.num / other.den) == <span class="number">0</span></span><br><span class="line">    <span class="comment"># 等于==比较，返回布尔值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__ne__</span><span class="params">(self, other)</span>:</span> </span><br><span class="line">        <span class="keyword">return</span> (self.num / self.den - other.num / other.den) != <span class="number">0</span></span><br><span class="line">	<span class="comment"># 定义print打印的返回值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        self is a Rational object</span></span><br><span class="line"><span class="string">        :return: return a string represent self</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="comment"># 获得最大公约数</span></span><br><span class="line">        gcd = self.getGCD()</span><br><span class="line">        <span class="comment"># 返回值去点后面的.0</span></span><br><span class="line">        <span class="keyword">if</span> str(self.num / gcd).split(<span class="string">'.'</span>)[<span class="number">0</span>] <span class="keyword">and</span> str(self.den / gcd).split(<span class="string">'.'</span>)[<span class="number">0</span>]:</span><br><span class="line">            <span class="keyword">return</span> str(self.num / gcd).split(<span class="string">'.'</span>)[<span class="number">0</span>] + <span class="string">'/'</span> + str(self.den / gcd).split(<span class="string">'.'</span>)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> str(self.num / gcd) + <span class="string">'/'</span> + str(self.den / gcd)</span><br></pre></td></tr></table></figure>
+
+<h4 id="应用-输出埃及分数"><a href="#应用-输出埃及分数" class="headerlink" title="应用: 输出埃及分数"></a><code>应用</code>: 输出埃及分数</h4><p>古埃及只用真分数，而且分数都表示成不同的<code>单位分数</code>(也就是分子为1，分母为各不相同的正整数)的和。如：</p>
+<blockquote>
+<p>3/4 = 1/2  + 1/4</p>
+<p>7/8 = 1/2 + 1/3 +1/24</p>
+</blockquote>
+<h4 id="算法原理："><a href="#算法原理：" class="headerlink" title="算法原理："></a><code>算法原理</code>：</h4><h6 id="不解释分子为1和分子和分母-是倍数关系的简单情况，说一下一般情况。"><a href="#不解释分子为1和分子和分母-是倍数关系的简单情况，说一下一般情况。" class="headerlink" title="不解释分子为1和分子和分母`是倍数关系的简单情况，说一下一般情况。"></a>不解释分子为1<code>和</code>分子和分母`是倍数关系的简单情况，说一下一般情况。</h6><p>对于<code>7/8</code>，分解的第一个单位分数的分母是2，也就是：<code>8 % 7 + 1</code>，可以设置一个变量为 <code>value = 分子 % 分母 + 1</code>，然后判断二者之差<code>7/8 - 1/value</code>的分子是不是等于1，如果是就解决了，如果不是就进行迭代：现在的传入分数是<code>7/8 - 1/value</code>，直到结果的分子都等于1.</p>
+<h4 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a><code>代码实现</code>：</h4><blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getEgyptianFraction</span><span class="params">(r)</span>:</span></span><br><span class="line">    i = <span class="literal">True</span></span><br><span class="line">    <span class="keyword">while</span> (i):</span><br><span class="line">        <span class="keyword">if</span> r.num &gt;= r.den:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'分子不能大于分母。'</span>)</span><br><span class="line">        <span class="keyword">elif</span> r.num == <span class="number">1</span>:</span><br><span class="line">            print(<span class="string">"1/&#123;&#125;"</span>.format(r.den))</span><br><span class="line">            i = <span class="literal">False</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">elif</span> r.den % r.num == <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">"1/&#123;&#125;"</span>.format(int(r.den / r.num)))</span><br><span class="line">            i = <span class="literal">False</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            value = int(r.den / r.num) + <span class="number">1</span></span><br><span class="line">            print(<span class="string">"1/&#123;&#125;"</span>.format(value), end=<span class="string">"+"</span>)</span><br><span class="line">            <span class="comment"># 迭代</span></span><br><span class="line">            newR = Rational(r.num * value - r.den, value * r.den)</span><br><span class="line">            <span class="keyword">return</span> getEgyptianFraction(newR)</span><br><span class="line"></span><br><span class="line">r0 = Rational(<span class="number">500</span> ,<span class="number">488</span>)</span><br><span class="line">getEgyptianFraction(r1) <span class="comment">#out: ValueError: 分子不能大于分母。</span></span><br><span class="line"></span><br><span class="line">r1 = Rational(<span class="number">7</span> ,<span class="number">8</span>)</span><br><span class="line">getEgyptianFraction(r1) <span class="comment">#out: 1/2+1/3+1/24</span></span><br><span class="line"></span><br><span class="line">r2 = Rational(<span class="number">475</span> ,<span class="number">488</span>) </span><br><span class="line">getEgyptianFraction(r2) <span class="comment">#out: 1/2+1/3+1/8+1/67+1/9809+1/481072596</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>原创不易，转载请注明出处：gaoxzblog.top/</p>
+</blockquote>
+</blockquote>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2020年08月03日 13:43</p>
+        <p>原始链接： <a class="post-url" href="/Gyz-polymer.github.io/2020/08/03/%E6%9C%89%E7%90%86%E6%95%B0%E7%B1%BB/" title="有理数类">https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/03/%E6%9C%89%E7%90%86%E6%95%B0%E7%B1%BB/</a></p>
+        <footer>
+            <a href="https://github.com/Gyz-polymer/Gyz-polymer.github.io">
+                <img src="/Gyz-polymer.github.io/images/logo.png" alt="Gxzblog">
+                Gxzblog
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃雪糕~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/Gyz-polymer.github.io/images/wechat_code.png" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/Gyz-polymer.github.io/images/wechat_code.png">
+                <img class="reward-select-item-wechat" src="/Gyz-polymer.github.io/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/Gyz-polymer.github.io/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/Gyz-polymer.github.io/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/03/%E6%9C%89%E7%90%86%E6%95%B0%E7%B1%BB/&title=《有理数类》 — Gxzblog&pic=https://github.com/Gyz-polymer/Gyz-polymer.github.ioimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/03/%E6%9C%89%E7%90%86%E6%95%B0%E7%B1%BB/&title=《有理数类》 — Gxzblog&source=Life is short, I enjoy python." data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/03/%E6%9C%89%E7%90%86%E6%95%B0%E7%B1%BB/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《有理数类》 — Gxzblog&url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/03/%E6%9C%89%E7%90%86%E6%95%B0%E7%B1%BB/&via=https://github.com/Gyz-polymer/Gyz-polymer.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/03/%E6%9C%89%E7%90%86%E6%95%B0%E7%B1%BB/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/03/%E6%9C%89%E7%90%86%E6%95%B0%E7%B1%BB/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/Gyz-polymer.github.io/tags/python/" class="color2">python</a>
+      
+    <a href="/Gyz-polymer.github.io/tags/算法/" class="color3">算法</a>
+      
+    <a href="/Gyz-polymer.github.io/tags/魔法方法/" class="color5">魔法方法</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#有理数类"><span class="post-toc-text">有理数类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#在python中，含有小数的数字通常用float数据类型来表示。"><span class="post-toc-text">在python中，含有小数的数字通常用float数据类型来表示。</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#❏-Rational-分子，分母-创建一个空列表。它接受两个参数，返回以字符串表示的分子，如1-2。"><span class="post-toc-text">❏ Rational(分子，分母)创建一个空列表。它接受两个参数，返回以字符串表示的分子，如1&#x2F;2。</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#❏-实现Rational类实例对象之间的加减乘除操作，利用魔法函数实现。"><span class="post-toc-text">❏ 实现Rational类实例对象之间的加减乘除操作，利用魔法函数实现。</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#❏-实现Rational类实例对象之间的大小比较，是否等于比较操作，利用魔法函数实现。"><span class="post-toc-text">❏ 实现Rational类实例对象之间的大小比较，是否等于比较操作，利用魔法函数实现。</span></a></li><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#❏-实现分子分母约分，输出最简分数，利用欧几里得最大公约数算法实现。"><span class="post-toc-text">❏ 实现分子分母约分，输出最简分数，利用欧几里得最大公约数算法实现。</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#代码："><span class="post-toc-text">代码：</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#应用-输出埃及分数"><span class="post-toc-text">应用: 输出埃及分数</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#算法原理："><span class="post-toc-text">算法原理：</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#不解释分子为1和分子和分母-是倍数关系的简单情况，说一下一般情况。"><span class="post-toc-text">不解释分子为1和分子和分母&#96;是倍数关系的简单情况，说一下一般情况。</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#代码实现："><span class="post-toc-text">代码实现：</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+  
+    <a href="/Gyz-polymer.github.io/2020/07/31/%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8SingleLinkList/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">单向链表 SingleLinkList</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <div id="SOHUCS" sid="有理数类" ></div>
+<script type="text/javascript">
+    (function(){
+        var appid = 'true';
+        var conf = 'true';
+        var width = window.innerWidth || document.documentElement.clientWidth;
+        if (width < 960) {
+            window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+        友情连接<a href="https://www.ypli1216.top" target="_blank" rel="noopener"> LiYP</a>
+      &copy; 2020 Gxzblog<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "https://github.com/Gyz-polymer/Gyz-polymer.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/Gyz-polymer.github.io/categories/javacript/">javacript</a><a class="category-link" href="/Gyz-polymer.github.io/categories/javacript/jQuery/">jQuery</a><a class="category-link" href="/Gyz-polymer.github.io/categories/python/">python</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/Gyz-polymer.github.io/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/Gyz-polymer.github.io/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/Gyz-polymer.github.io/tags/python/" style="font-size: 20px;">python</a> <a href="/Gyz-polymer.github.io/tags/%E5%8A%9E%E5%85%AC%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 10px;">办公自动化</a> <a href="/Gyz-polymer.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 15px;">数据结构</a> <a href="/Gyz-polymer.github.io/tags/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/" style="font-size: 10px;">文件处理</a> <a href="/Gyz-polymer.github.io/tags/%E7%AE%97%E6%B3%95/" style="font-size: 17.5px;">算法</a> <a href="/Gyz-polymer.github.io/tags/%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95/" style="font-size: 10px;">魔法方法</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/Gyz-polymer.github.io/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/Gyz-polymer.github.io/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/Gyz-polymer.github.io/tags/python/" style="font-size: 20px;">python</a> <a href="/Gyz-polymer.github.io/tags/%E5%8A%9E%E5%85%AC%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 10px;">办公自动化</a> <a href="/Gyz-polymer.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 15px;">数据结构</a> <a href="/Gyz-polymer.github.io/tags/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/" style="font-size: 10px;">文件处理</a> <a href="/Gyz-polymer.github.io/tags/%E7%AE%97%E6%B3%95/" style="font-size: 17.5px;">算法</a> <a href="/Gyz-polymer.github.io/tags/%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95/" style="font-size: 10px;">魔法方法</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+
+<script src="/Gyz-polymer.github.io/js/search.js"></script>
+
+
+<script src="/Gyz-polymer.github.io/js/main.js"></script>
+
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  
+<script src="/Gyz-polymer.github.io/js/particles.js"></script>
+
+
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  
+<script src="/Gyz-polymer.github.io/js/animate.js"></script>
+
+
+
+  
+<script src="/Gyz-polymer.github.io/js/pop-img.js"></script>
+
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
