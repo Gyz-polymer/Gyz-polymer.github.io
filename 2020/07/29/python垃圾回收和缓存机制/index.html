@@ -8,17 +8,17 @@
   
     <meta name="keywords" content="Gaoxz,Gaoxz's Blog" />
   
-  <meta name="description" content="垃圾回收机制一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。引用计数器环状双向链表：refchain—-python中创建的任意对象，都会加到refchain的双向链表中—包含了所有的python对象  针对代码name &#x3D; &#39;bobby&#39;, c语言会创建如下4个数据：  上一个对象的指针 *_ob_prev和下一个对象的指针 *_ob_next(_Py_HEA">
+  <meta name="description" content="垃圾回收机制一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。引用计数器环状双向链表：refchain—-python中创建的任意对象，都会加到refchain的双向链表中—包含了所有的python对象  针对代码name &#x3D; &#39;bobby&#39;, 底层c语言会创建如下4个数据：  上一个对象的指针 *_ob_prev和下一个对象的指针 *_ob_next(_Py_H">
 <meta property="og:type" content="article">
 <meta property="og:title" content="垃圾回收和缓存机制">
 <meta property="og:url" content="https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="Gxzblog">
-<meta property="og:description" content="垃圾回收机制一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。引用计数器环状双向链表：refchain—-python中创建的任意对象，都会加到refchain的双向链表中—包含了所有的python对象  针对代码name &#x3D; &#39;bobby&#39;, c语言会创建如下4个数据：  上一个对象的指针 *_ob_prev和下一个对象的指针 *_ob_next(_Py_HEA">
+<meta property="og:description" content="垃圾回收机制一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。引用计数器环状双向链表：refchain—-python中创建的任意对象，都会加到refchain的双向链表中—包含了所有的python对象  针对代码name &#x3D; &#39;bobby&#39;, 底层c语言会创建如下4个数据：  上一个对象的指针 *_ob_prev和下一个对象的指针 *_ob_next(_Py_H">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190112163900487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Rhbm14MjE5,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200429162029903.png">
 <meta property="article:published_time" content="2020-07-29T08:42:04.290Z">
-<meta property="article:modified_time" content="2020-07-30T06:46:42.421Z">
+<meta property="article:modified_time" content="2020-08-03T02:19:27.909Z">
 <meta property="article:author" content="Gxzblog">
 <meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
@@ -155,13 +155,14 @@
             
             <h2 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h2><h5 id="一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。"><a href="#一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。" class="headerlink" title="一句话python垃圾回收：以引用计数为主，标记清除和分代回收为辅。"></a>一句话python垃圾回收：以<code>引用计数</code>为主，<code>标记清除</code>和<code>分代回收</code>为辅。</h5><h4 id="引用计数器"><a href="#引用计数器" class="headerlink" title="引用计数器"></a>引用计数器</h4><p><code>环状双向链表</code>：<code>refchain</code>—-python中创建的任意对象，都会加到refchain的双向链表中—包含了所有的python对象</p>
 <p><img src="https://img-blog.csdnimg.cn/20190112163900487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Rhbm14MjE5,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p>针对代码<code>name = &#39;bobby&#39;</code>, c语言会创建如下4个数据：</p>
+<p>针对代码<code>name = &#39;bobby&#39;</code>, 底层c语言会创建如下4个数据：</p>
 <ul>
 <li><code>上一个对象的指针 *_ob_prev</code>和<code>下一个对象的指针 *_ob_next</code>(_Py_HEAD_EXTRA)—双向查找</li>
 <li><code>数据的类型 ob_refcnt</code>：如int,str,float等</li>
-<li><code>引用计数 *ob_type</code>。此时引用计数是1，如果再让<code>new  = name</code>,则引用计数变为2。每一个对象都有至少这四个值,这四个值存放在结构体<code>PyObject</code> 里。</li>
+<li><code>引用计数 *ob_type</code>。此时引用计数是1，如果再让<code>new  = name</code>,则引用计数变为2。</li>
+<li>每一个对象都有至少这四个值,这四个值存放在结构体<code>PyObject</code> 里。</li>
 </ul>
-<p>由多个元素组成的对象，如字典，列表，集合等还有一个值<code>ob_size</code>，用来存储数据大大小(元素的个数)。</p>
+<p>由多个元素组成的对象，如字典，列表，集合等还有一个值<code>ob_size</code>，用来存储数据大小(元素的个数)。</p>
 <blockquote>
 <p>除<code>PyObject</code>之外，Python中另一个重要的是<code>PyVarObject</code>了，它是变长对象，例如List、String，显然<code>PyObject</code>无法满足它们需求，所以就需要用到<code>PyVarObject</code>了，实际上，<code>PyVarObject</code>与<code>PyObject</code>相比只多了一个属性<code>ob_size</code>，它指明了变成对象中有多少个元素（不是字节数）</p>
 </blockquote>
@@ -173,14 +174,14 @@
 <h5 id="引用计数器的bug：循环引用"><a href="#引用计数器的bug：循环引用" class="headerlink" title="引用计数器的bug：循环引用"></a>引用计数器的bug：<code>循环引用</code></h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">t1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]  <span class="comment">#refchain创建一个列表，列表的引用计数为1</span></span><br><span class="line">t2 = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]  <span class="comment">#refchain再创建一个列表，列表的引用计数为1</span></span><br><span class="line">t1.append(t2) <span class="comment"># t2被追加到t1，则t2对应的对象[4,5,6]的引用计数器加1，变为2</span></span><br><span class="line">t2.append(t1) <span class="comment"># t1被追加到t2，则v1对应的对象[1,2,3]的引用计数器加1，变为2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> t1 <span class="comment"># 引用计数器-1，还是1，无法回收</span></span><br><span class="line"><span class="keyword">del</span> t2 <span class="comment"># 引用计数器-1，还是1，无法回收</span></span><br><span class="line"><span class="comment"># 但是，此时没有变量指向[1,2,3]和[4,5,6]这两个列表了，变成一直存在于内存中的垃圾</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="标记清除"><a href="#标记清除" class="headerlink" title="标记清除"></a>标记清除</h4><h5 id="目的：解决循环引用"><a href="#目的：解决循环引用" class="headerlink" title="目的：解决循环引用"></a>目的：解决<code>循环引用</code></h5><p><code>实现</code>：再python底层再维护一个链表，在链表中专门放那些可能存在循环引用的对象(能存放其他对象的对象)，如list,dict,tuple,set等。</p>
-<p>在python内部<code>某种情况</code>下区扫描这个可能循环引用的链表，检查是否有循环引用，如果有就让双方的引用计数器都减1，如果计数器是0就垃圾回收。</p>
+<p>在python内部<code>某种情况</code>下去扫描这个可能循环引用的链表，检查是否有循环引用，如果有就让双方的引用计数器都减1，如果计数器是0就垃圾回收。</p>
 <p>因此，python就有了两个链表。</p>
 <p><img src="https://img-blog.csdnimg.cn/20200429162029903.png" alt="img"></p>
 <p>问题来了：</p>
 <ul>
 <li><p>什么时候扫描？</p>
 </li>
-<li><p>扫描的代价：每次不仅要扫描可能有循环引用的对象，还要扫描其子元素是否有循环引用</p>
+<li><p>扫描的代价：每次不仅要扫描可能有循环引用的对象，还要扫描其子元素是否有循环引用！</p>
 </li>
 </ul>
 <p>扫描的代价很大，每次全部扫描成本很高，频繁扫描严重消耗性能，所以引入了<code>对象分代</code>机制。</p>
@@ -197,17 +198,17 @@
 <p>对于字符串str类型，内部将所有的<code>ASCII字符</code>缓存到了<code>unicode_latin[256]</code>链表中，以后不用再反复创建。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">'C'</span></span><br><span class="line">print(s1) <span class="comment">#out:1343834377264</span></span><br><span class="line"><span class="keyword">del</span> s1</span><br><span class="line">s2 = <span class="string">'C'</span></span><br><span class="line">print(s2) <span class="comment">#out:1343834377264  s1和s2用的是同一个id地址</span></span><br></pre></td></tr></table></figure>
 
-<p>字符串驻留机制：对于只有字符，数字，下划线且长度不大于20的字符串，会缓存到内存中，再次创建一模一样的字符串时，不会再次开辟内存，而是直接从内存中取出来。</p>
+<p><code>字符串驻留机制</code>：对于只有字符，数字，下划线且长度不大于20的字符串，会缓存到内存中，再次创建一模一样的字符串时，不会再次开辟内存，而是直接从内存中取出来。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">'abcde'</span></span><br><span class="line">print(id(s1)) <span class="comment">#out:1996598711216</span></span><br><span class="line"><span class="keyword">del</span> s1</span><br><span class="line">s2 = <span class="string">'abcde'</span></span><br><span class="line">print(id(s2)) <span class="comment">#out:1996598711216</span></span><br></pre></td></tr></table></figure>
 
 <h5 id="free-list链表"><a href="#free-list链表" class="headerlink" title="free_list链表"></a>free_list链表</h5><p>当一个对象(float,list,dict,tuple)的引用计数器为0时，按理说应该回收，但内部不直接回收，而是放到<code>free_list链表</code>中当作缓存，下次再创建相同类型的对象时就不用重新开辟内存了，而是直接使用<code>free_list链表</code>。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pie = <span class="number">3.14</span>  <span class="comment"># 创建float类型对象，开辟内存，添加到refchain中</span></span><br><span class="line"><span class="keyword">del</span> pie <span class="comment"># 从refchain移除，添加到free_list中</span></span><br><span class="line"><span class="comment"># 再次创建float类型</span></span><br><span class="line">t2 = <span class="number">6.88</span> <span class="comment"># 不会重新开辟内存，从free_list中获取对象，对象数据初始化再放到refchain中。</span></span><br></pre></td></tr></table></figure>
 
-<p>但是不是所以数据都缓存到free_list中，而是有数量限制，假设只能放100个对象，超过了100就会删除最先添加的对象。</p>
+<p>但不是所以数据都缓存到free_list中，而是有数量限制，假设只能放100个对象，超过了100就会删除最先添加的对象。</p>
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2020年07月30日 14:46</p>
+        <p>最后更新： 2020年08月03日 10:19</p>
         <p>原始链接： <a class="post-url" href="/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" title="垃圾回收和缓存机制">https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/07/29/python%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%92%8C%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</a></p>
         <footer>
             <a href="https://github.com/Gyz-polymer/Gyz-polymer.github.io">
