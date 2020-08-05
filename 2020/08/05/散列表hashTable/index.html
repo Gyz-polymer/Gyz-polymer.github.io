@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>散列表hashTable | Gxzblog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Gaoxz,Gaoxz's Blog" />
+  
+  <meta name="description" content="散列表hashTable散列就是我们常说的哈希hash。散列表是元素集合，其中的元素以一种便于查找的方式存储。散列表中的每个位置通常被称为槽，其中可以存储一个元素。槽用一个从0开始的整数标记，例如0号槽、1号槽、2号槽，等等。初始情形下，散列表中没有元素，每个槽都是空的。可以用列表来实现散列表，并将每个元素都初始化为Python中的特殊值None。  散列函数将散列表中的元素与其所属位置对应起来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="散列表hashTable">
+<meta property="og:url" content="https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/05/%E6%95%A3%E5%88%97%E8%A1%A8hashTable/index.html">
+<meta property="og:site_name" content="Gxzblog">
+<meta property="og:description" content="散列表hashTable散列就是我们常说的哈希hash。散列表是元素集合，其中的元素以一种便于查找的方式存储。散列表中的每个位置通常被称为槽，其中可以存储一个元素。槽用一个从0开始的整数标记，例如0号槽、1号槽、2号槽，等等。初始情形下，散列表中没有元素，每个槽都是空的。可以用列表来实现散列表，并将每个元素都初始化为Python中的特殊值None。  散列函数将散列表中的元素与其所属位置对应起来。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ali.xmssdn.micloud.mi.com/2/1566455553514/get_thumbnail?sig=8-Uf5qMMgcatGLHnWOL8d1qCODM&data=Rz0-ark6qUreIRGpzTnUNipjAfdO19mDseiCUpyBeHw6um8ptk_Df5vRjpqXZJVZPIucWZJC6syuKrWoQ1X3MzQVsZ2fqDjfr7F51QgZ8eLY7Dq3Uhbi23iIbE1ZjixicjChqVM0RMqfMiBwtntkz1IAieewFdxue8XQkCI_UlgFH43hxB6If32vaVL_I-SDZ5vK00j_EbJTmCbR-nixpX-ct_jmuvPsVJFK9y9C-VdL-nVBTTjQgBnWXfomTBCHa0DdCOdM40YerJ-pSseaDUzTkweSyxVpgS-zpXuiRhHQOYFaPSlrykxLMlDxk2yCu3-5wkzmEcY&ts=1596647343465&w=1080&h=1080&r=0&_cachekey=fd115fa138e285ab01e7f1f172adc234">
+<meta property="og:image" content="https://ali.xmssdn.micloud.mi.com/2/1566455553514/get_thumbnail?sig=Ng0cnR7qiHtF6i1jGzam0TTzETE&data=Rz0-VFJ_Ci6wlghmxA1v7FsTc1Z0_TEagbmAIGaWPW9REAsptigTv5KuDx6EfUt11zRv6jdC6syuKrWobWX5jjM7BSIYO-FDYyy36-hO4wDY7Etojbg-UJHK1xYRIH9wyeehv3cyRMr4ElJR6TR7-3ZX0uewFeKFPma0_pUmnVExpFeQtGwpRVdH8GKuIZZ5cN7ZuOKbEbI0SObYhfk1tmZCmxNZSUBJVJFK9y_2QCHlxuUoWrm0uReWcQv3TBCHB1TdZPNM40YeuruvSse0PUJulCkmdJL6WLN_OLWcpkbC24Fa9CJrykxLMlDxk2yCu3-5wkzmEcY&ts=1596647418076&w=270&h=270&r=0&_cachekey=6eb42ee71da85a2be1729cf833a71742">
+<meta property="og:image" content="https://ali.xmssdn.micloud.mi.com/2/1566455553514/get_thumbnail?sig=J81HiD1YIxLlmj6vMP8TX9uej-k&data=Rz0-kAqBJr4bxEeZX1lHfafIvBFdvpxwMh8LcqedC3GXjzMptjSzLe8E3CSdiDlF6jw_JzdC6syuKrWo8Wpp4ABXSFqZ5oPeZvxPlP_fX1jY7FaK665wrStzBCAJBv_c7Xihn2AxRMroHnxM8xR53kJtv-ewFSbdwEokVcdpYspljMZsb6NubBTqmtEIqsS4e-jHfn2jEbIo6HSlLyoPr5Mwqy5RGY1JVJFK9y8FNQyjsPQgFiUt812P7cHgTBCHa0DdCOdM40YemqysSscoMtIAp0VrDBMnOi566E3jsdd-g4FakfJrykxLMlDxk2yCu3-5wkzmEcY&ts=1596648009910&w=1080&h=1080&r=0&_cachekey=d81eb01fd2f03c0242b6a772e89ef467">
+<meta property="article:published_time" content="2020-08-05T00:10:42.791Z">
+<meta property="article:modified_time" content="2020-08-05T00:13:32.063Z">
+<meta property="article:author" content="Gxzblog">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="魔法方法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ali.xmssdn.micloud.mi.com/2/1566455553514/get_thumbnail?sig=8-Uf5qMMgcatGLHnWOL8d1qCODM&data=Rz0-ark6qUreIRGpzTnUNipjAfdO19mDseiCUpyBeHw6um8ptk_Df5vRjpqXZJVZPIucWZJC6syuKrWoQ1X3MzQVsZ2fqDjfr7F51QgZ8eLY7Dq3Uhbi23iIbE1ZjixicjChqVM0RMqfMiBwtntkz1IAieewFdxue8XQkCI_UlgFH43hxB6If32vaVL_I-SDZ5vK00j_EbJTmCbR-nixpX-ct_jmuvPsVJFK9y9C-VdL-nVBTTjQgBnWXfomTBCHa0DdCOdM40YerJ-pSseaDUzTkweSyxVpgS-zpXuiRhHQOYFaPSlrykxLMlDxk2yCu3-5wkzmEcY&ts=1596647343465&w=1080&h=1080&r=0&_cachekey=fd115fa138e285ab01e7f1f172adc234">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/Gyz-polymer.github.io/css/style.css">
+
+  
+<script src="/Gyz-polymer.github.io/js/pace.min.js"></script>
+
+  
+
+  
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/Gyz-polymer.github.io/" class="left">
+                    <span class="site-title">Gaoxz&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a  href="/Gyz-polymer.github.io/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a  href="/Gyz-polymer.github.io/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a  href="/Gyz-polymer.github.io/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/Gyz-polymer.github.io/">
+                    <img src="/Gyz-polymer.github.io/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Gaoxz&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        一个专注 代码 开发的业余博客
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Gaoxz" target="_blank" href="https://github.com/Gyz-polymer">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="https://github.com/Gyz-polymer">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" href="https://weibo.com/u/3860537024">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="qq" target="_blank" href="https://user.qzone.qq.com/1246890669">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-散列表hashTable" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      散列表hashTable
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/Gyz-polymer.github.io/categories/python/">python</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2020-08-05
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="散列表hashTable"><a href="#散列表hashTable" class="headerlink" title="散列表hashTable"></a>散列表hashTable</h2><h5 id="散列就是我们常说的哈希hash。"><a href="#散列就是我们常说的哈希hash。" class="headerlink" title="散列就是我们常说的哈希hash。"></a><code>散列</code>就是我们常说的<code>哈希hash</code>。</h5><p><code>散列表</code>是元素集合，其中的元素以一种便于查找的方式存储。散列表中的每个位置通常被称为<code>槽</code>，其中可以存储一个元素。槽用一个从0开始的整数标记，例如0号槽、1号槽、2号槽，等等。初始情形下，散列表中没有元素，每个槽都是空的。可以用列表来实现散列表，并将每个元素都初始化为Python中的特殊值None。</p>
+<p><img src="https://ali.xmssdn.micloud.mi.com/2/1566455553514/get_thumbnail?sig=8-Uf5qMMgcatGLHnWOL8d1qCODM&data=Rz0-ark6qUreIRGpzTnUNipjAfdO19mDseiCUpyBeHw6um8ptk_Df5vRjpqXZJVZPIucWZJC6syuKrWoQ1X3MzQVsZ2fqDjfr7F51QgZ8eLY7Dq3Uhbi23iIbE1ZjixicjChqVM0RMqfMiBwtntkz1IAieewFdxue8XQkCI_UlgFH43hxB6If32vaVL_I-SDZ5vK00j_EbJTmCbR-nixpX-ct_jmuvPsVJFK9y9C-VdL-nVBTTjQgBnWXfomTBCHa0DdCOdM40YerJ-pSseaDUzTkweSyxVpgS-zpXuiRhHQOYFaPSlrykxLMlDxk2yCu3-5wkzmEcY&ts=1596647343465&w=1080&h=1080&r=0&_cachekey=fd115fa138e285ab01e7f1f172adc234" alt="img"></p>
+<p>散列函数将散列表中的元素与其所属位置对应起来。对散列表中的任一元素，散列函数返回一个介于0和m -1之间的整数。</p>
+<p>常见的散列函数有<code>“取余函数”</code>，即用一个元素除以表的大小，并将得到的余数作为散列值（h(item) = item%size）。</p>
+<p><img src="https://ali.xmssdn.micloud.mi.com/2/1566455553514/get_thumbnail?sig=Ng0cnR7qiHtF6i1jGzam0TTzETE&data=Rz0-VFJ_Ci6wlghmxA1v7FsTc1Z0_TEagbmAIGaWPW9REAsptigTv5KuDx6EfUt11zRv6jdC6syuKrWobWX5jjM7BSIYO-FDYyy36-hO4wDY7Etojbg-UJHK1xYRIH9wyeehv3cyRMr4ElJR6TR7-3ZX0uewFeKFPma0_pUmnVExpFeQtGwpRVdH8GKuIZZ5cN7ZuOKbEbI0SObYhfk1tmZCmxNZSUBJVJFK9y_2QCHlxuUoWrm0uReWcQv3TBCHB1TdZPNM40YeuruvSse0PUJulCkmdJL6WLN_OLWcpkbC24Fa9CJrykxLMlDxk2yCu3-5wkzmEcY&ts=1596647418076&w=270&h=270&r=0&_cachekey=6eb42ee71da85a2be1729cf833a71742" alt="img"></p>
+<p>槽的占用率被称作<code>载荷因子</code>，记作λ，定义如下:</p>
+<p><img src="https://ali.xmssdn.micloud.mi.com/2/1566455553514/get_thumbnail?sig=J81HiD1YIxLlmj6vMP8TX9uej-k&data=Rz0-kAqBJr4bxEeZX1lHfafIvBFdvpxwMh8LcqedC3GXjzMptjSzLe8E3CSdiDlF6jw_JzdC6syuKrWo8Wpp4ABXSFqZ5oPeZvxPlP_fX1jY7FaK665wrStzBCAJBv_c7Xihn2AxRMroHnxM8xR53kJtv-ewFSbdwEokVcdpYspljMZsb6NubBTqmtEIqsS4e-jHfn2jEbIo6HSlLyoPr5Mwqy5RGY1JVJFK9y8FNQyjsPQgFiUt812P7cHgTBCHa0DdCOdM40YemqysSscoMtIAp0VrDBMnOi566E3jsdd-g4FakfJrykxLMlDxk2yCu3-5wkzmEcY&ts=1596648009910&w=1080&h=1080&r=0&_cachekey=d81eb01fd2f03c0242b6a772e89ef467" alt="img"></p>
+<p>散列函数会将两个元素都放入同一个槽，这种情况被称作冲突，也叫“碰撞”。当两个元素被分到同一个槽中时，必须通过一种系统化方法在散列表中安置第二个元素。这个过程被称为<code>处理冲突</code>。载荷因子越大，冲突的可能性越高。</p>
+<h5 id="再散列"><a href="#再散列" class="headerlink" title="再散列"></a><code>再散列</code></h5><p><code>再散列</code>泛指在发生冲突后寻找另一个槽的过程。简单的做法是从起初的散列值开始，顺序遍历散列表，直到找到一个空槽。 由于是逐个访问槽，因此这个做法被称作<code>线性探测</code>。</p>
+<p>散列表得实现：</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">hashTable</span><span class="params">()</span>:</span></span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">     self._size = <span class="number">10</span></span><br><span class="line">     <span class="comment"># 列表slots存放key，列表data存放value</span></span><br><span class="line">     self.slots = [<span class="literal">None</span>] * self._size</span><br><span class="line">     self.value = [<span class="literal">None</span>] * self._size</span><br><span class="line"> <span class="comment"># 向散列表中添加元素</span></span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">put</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">     <span class="comment"># 获取元素槽的位置</span></span><br><span class="line">     hashvalue = self.hashfunction(key, len(self.slots))</span><br><span class="line">     <span class="comment"># 如果槽是空的--就放入槽中值</span></span><br><span class="line">     <span class="keyword">if</span> self.slots[hashvalue] == <span class="literal">None</span>:</span><br><span class="line">         self.slots[hashvalue] = key</span><br><span class="line">         self.value[hashvalue] = value</span><br><span class="line">     <span class="comment"># 如果槽是满的</span></span><br><span class="line">     <span class="keyword">else</span>:</span><br><span class="line">         <span class="comment"># 如果满的槽对应现在的key，就执行替换操作</span></span><br><span class="line">         <span class="keyword">if</span> self.slots[hashvalue] == key:</span><br><span class="line">             self.value[hashvalue] = value</span><br><span class="line">         <span class="comment"># 如果槽是满的，说明key对应的值已经有了--冲突，进行再散列</span></span><br><span class="line">         <span class="keyword">else</span>:</span><br><span class="line">             <span class="comment"># 获取下一个槽</span></span><br><span class="line">             nextslot = self.rehash(hashvalue, len(self.slots))</span><br><span class="line">             <span class="comment"># 找出一个空槽</span></span><br><span class="line">             <span class="keyword">while</span> self.slots[nextslot] != <span class="literal">None</span> <span class="keyword">and</span> self.slots[nextslot] != key:</span><br><span class="line">                 nextslot = self.rehash(nextslot, len(self.slots))</span><br><span class="line">             <span class="comment"># 如果槽是空的就添加</span></span><br><span class="line">             <span class="keyword">if</span> self.slots[nextslot] == <span class="literal">None</span>:</span><br><span class="line">                 self.slots[nextslot] = key</span><br><span class="line">                 self.value[nextslot] = value</span><br><span class="line">             <span class="comment"># 否则替换</span></span><br><span class="line">             <span class="keyword">else</span>:</span><br><span class="line">                 self.value[nextslot] = value</span><br><span class="line"> <span class="comment"># 散列函数：将散列表中的元素与所属位置对应起来--此处是将键整除长度取余数作为槽的位置</span></span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">hashfunction</span><span class="params">(self, key, size)</span>:</span></span><br><span class="line">     <span class="keyword">return</span> key % size</span><br><span class="line"> <span class="comment"># 处理冲突：再散列--解决散列函数的冲突--将键加1再整除长度取余数作为槽的位置</span></span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">rehash</span><span class="params">(self, oldhash, size)</span>:</span></span><br><span class="line">     <span class="keyword">return</span> (oldhash + <span class="number">1</span>) % size</span><br><span class="line"> <span class="comment"># 根据键获取值</span></span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, key)</span>:</span></span><br><span class="line">     <span class="comment"># 利用散列函数获取键的位置--没有冲突时的位置</span></span><br><span class="line">     startslot = self.hashfunction(key, len(self.slots))</span><br><span class="line">     data = <span class="literal">None</span></span><br><span class="line">     stop = <span class="literal">False</span></span><br><span class="line">     found = <span class="literal">False</span></span><br><span class="line">     position = startslot</span><br><span class="line">     <span class="keyword">while</span> self.slots[position] != <span class="literal">None</span> <span class="keyword">and</span> <span class="keyword">not</span> found <span class="keyword">and</span> <span class="keyword">not</span> stop:</span><br><span class="line">         <span class="comment"># 没有冲突时</span></span><br><span class="line">         <span class="keyword">if</span> self.slots[position] == key:</span><br><span class="line">             found = <span class="literal">True</span></span><br><span class="line">             data = self.value[position]</span><br><span class="line">         <span class="comment"># 冲突时--获取再散列的位置</span></span><br><span class="line">         <span class="keyword">else</span>:</span><br><span class="line">             position = self.rehash(position, len(self.slots))</span><br><span class="line">             <span class="keyword">if</span> position == startslot:</span><br><span class="line">                 stop = <span class="literal">True</span></span><br><span class="line">     <span class="keyword">return</span> data</span><br><span class="line"> <span class="comment"># 设置实现的魔法方法</span></span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">     <span class="keyword">return</span> self.get(key)</span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(self, key, data)</span>:</span></span><br><span class="line">     self.put(key, data)</span><br><span class="line"></span><br><span class="line">ha = hashTable()</span><br><span class="line">ha[<span class="number">19</span>] = <span class="string">'a'</span></span><br><span class="line">ha[<span class="number">26</span>] = <span class="string">'b'</span></span><br><span class="line">ha[<span class="number">33</span>] = <span class="string">'c'</span></span><br><span class="line">ha[<span class="number">67</span>] = <span class="string">'d'</span></span><br><span class="line">ha[<span class="number">54</span>] = <span class="string">'e'</span></span><br><span class="line">ha[<span class="number">94</span>] = <span class="string">'f'</span></span><br><span class="line">ha[<span class="number">74</span>] = <span class="string">'g'</span></span><br><span class="line">ha[<span class="number">14</span>] = <span class="string">'h'</span></span><br><span class="line">print(ha.slots)</span><br><span class="line">print(ha.value)</span><br><span class="line">print(ha[<span class="number">14</span>]) <span class="comment">#out: h</span></span><br><span class="line">ha[<span class="number">14</span>] = <span class="string">'i'</span></span><br><span class="line">print(ha[<span class="number">14</span>]) <span class="comment">#out: i</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用"></a><code>应用</code></h5><p>散列表的应用太多，python的字典就是通过散列表实现的，实现的基本原理(简单原理)如上述代码，字典dict会根据需要实现动态开辟内存，扩展字典的长度，并保持一个比较合适的<code>载荷因子</code>(约70%)。</p>
+<blockquote>
+<p>参考文献<code>《python数据结构与算法分析(第2版)》</code></p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>原创不易，转载请注明出处：gaoxzblog.top/</p>
+</blockquote>
+</blockquote>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2020年08月05日 08:13</p>
+        <p>原始链接： <a class="post-url" href="/Gyz-polymer.github.io/2020/08/05/%E6%95%A3%E5%88%97%E8%A1%A8hashTable/" title="散列表hashTable">https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/05/%E6%95%A3%E5%88%97%E8%A1%A8hashTable/</a></p>
+        <footer>
+            <a href="https://github.com/Gyz-polymer/Gyz-polymer.github.io">
+                <img src="/Gyz-polymer.github.io/images/logo.png" alt="Gxzblog">
+                Gxzblog
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃雪糕~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/Gyz-polymer.github.io/images/wechat_code.png" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/Gyz-polymer.github.io/images/wechat_code.png">
+                <img class="reward-select-item-wechat" src="/Gyz-polymer.github.io/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/Gyz-polymer.github.io/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/Gyz-polymer.github.io/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/05/%E6%95%A3%E5%88%97%E8%A1%A8hashTable/&title=《散列表hashTable》 — Gxzblog&pic=https://github.com/Gyz-polymer/Gyz-polymer.github.ioimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/05/%E6%95%A3%E5%88%97%E8%A1%A8hashTable/&title=《散列表hashTable》 — Gxzblog&source=Life is short, I enjoy python." data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/05/%E6%95%A3%E5%88%97%E8%A1%A8hashTable/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《散列表hashTable》 — Gxzblog&url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/05/%E6%95%A3%E5%88%97%E8%A1%A8hashTable/&via=https://github.com/Gyz-polymer/Gyz-polymer.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/05/%E6%95%A3%E5%88%97%E8%A1%A8hashTable/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://github.com/Gyz-polymer/Gyz-polymer.github.io/2020/08/05/%E6%95%A3%E5%88%97%E8%A1%A8hashTable/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/Gyz-polymer.github.io/tags/python/" class="color2">python</a>
+      
+    <a href="/Gyz-polymer.github.io/tags/数据结构/" class="color5">数据结构</a>
+      
+    <a href="/Gyz-polymer.github.io/tags/魔法方法/" class="color5">魔法方法</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#散列表hashTable"><span class="post-toc-text">散列表hashTable</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#散列就是我们常说的哈希hash。"><span class="post-toc-text">散列就是我们常说的哈希hash。</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#再散列"><span class="post-toc-text">再散列</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#应用"><span class="post-toc-text">应用</span></a></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+  
+    <a href="/Gyz-polymer.github.io/2020/08/03/%E6%95%B0%E6%8D%AE%E9%9B%86dataSet/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">数据集dataSet</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <div id="SOHUCS" sid="散列表hashTable" ></div>
+<script type="text/javascript">
+    (function(){
+        var appid = 'true';
+        var conf = 'true';
+        var width = window.innerWidth || document.documentElement.clientWidth;
+        if (width < 960) {
+            window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+        友情连接<a href="https://www.ypli1216.top" target="_blank" rel="noopener"> LiYP</a>
+      &copy; 2020 Gxzblog<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "https://github.com/Gyz-polymer/Gyz-polymer.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/Gyz-polymer.github.io/categories/javacript/">javacript</a><a class="category-link" href="/Gyz-polymer.github.io/categories/javacript/jQuery/">jQuery</a><a class="category-link" href="/Gyz-polymer.github.io/categories/python/">python</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/Gyz-polymer.github.io/tags/JavaScript/" style="font-size: 13.33px;">JavaScript</a> <a href="/Gyz-polymer.github.io/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/Gyz-polymer.github.io/tags/python/" style="font-size: 20px;">python</a> <a href="/Gyz-polymer.github.io/tags/%E5%8A%9E%E5%85%AC%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 10px;">办公自动化</a> <a href="/Gyz-polymer.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">数据结构</a> <a href="/Gyz-polymer.github.io/tags/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/" style="font-size: 10px;">文件处理</a> <a href="/Gyz-polymer.github.io/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.67px;">算法</a> <a href="/Gyz-polymer.github.io/tags/%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95/" style="font-size: 13.33px;">魔法方法</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/Gyz-polymer.github.io/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/Gyz-polymer.github.io/tags/JavaScript/" style="font-size: 13.33px;">JavaScript</a> <a href="/Gyz-polymer.github.io/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/Gyz-polymer.github.io/tags/python/" style="font-size: 20px;">python</a> <a href="/Gyz-polymer.github.io/tags/%E5%8A%9E%E5%85%AC%E8%87%AA%E5%8A%A8%E5%8C%96/" style="font-size: 10px;">办公自动化</a> <a href="/Gyz-polymer.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">数据结构</a> <a href="/Gyz-polymer.github.io/tags/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/" style="font-size: 10px;">文件处理</a> <a href="/Gyz-polymer.github.io/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.67px;">算法</a> <a href="/Gyz-polymer.github.io/tags/%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95/" style="font-size: 13.33px;">魔法方法</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+
+<script src="/Gyz-polymer.github.io/js/search.js"></script>
+
+
+<script src="/Gyz-polymer.github.io/js/main.js"></script>
+
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  
+<script src="/Gyz-polymer.github.io/js/particles.js"></script>
+
+
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  
+<script src="/Gyz-polymer.github.io/js/animate.js"></script>
+
+
+
+  
+<script src="/Gyz-polymer.github.io/js/pop-img.js"></script>
+
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
